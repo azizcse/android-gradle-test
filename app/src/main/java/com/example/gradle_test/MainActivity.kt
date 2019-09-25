@@ -1,5 +1,6 @@
 package com.example.gradle_test
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,7 @@ import com.example.apitest.ApiEvent.SUCCESS
 import com.example.apitest.ApiManager
 import com.example.apitest.DataEvent
 import com.example.apitest.Event
+import com.example.apitest.SuccessEvent
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import io.reactivex.subjects.PublishSubject
@@ -20,10 +22,11 @@ import kotlin.random.Random
 class MainActivity : AppCompatActivity() {
     val subject: PublishSubject<Int> = PublishSubject.create()
     lateinit var apiManager: ApiManager
-
+    lateinit var context: Context
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        context = applicationContext
         apiManager = ApiManager.on()
         subscribeEvent()
         doSomeWork()
@@ -36,12 +39,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun listenData(dataEvent: Event) {
-        if(dataEvent is DataEvent){
-            Toast.makeText(baseContext, "Value ${dataEvent.value}", Toast.LENGTH_SHORT).show()
+        if (dataEvent is DataEvent) {
+            runOnUiThread {
+                Toast.makeText(context, "Value ${dataEvent.value}", Toast.LENGTH_SHORT).show()
+            }
+
+
         }
     }
-    fun successListener(event : Event){
 
+    fun successListener(event: Event) {
+        if (event is SuccessEvent) {
+
+        }
     }
 
     fun onButtonClick(view: View) {

@@ -30,8 +30,7 @@ public class ApiManager implements ApiEvent {
 
     @Override
     public void onReceive(Event event) {
-        //new Thread(() -> subjects.onNext(event)).start();
-        subjects.onNext(event);
+         new Thread(()->subjects.onNext(event)).start();
     }
 
 
