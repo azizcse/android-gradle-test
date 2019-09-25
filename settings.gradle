@@ -1,0 +1,2 @@
+include ':app', ':apitest'
+rootProject.name='gradle-test'
