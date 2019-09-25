@@ -1,5 +1,7 @@
 package com.example.apitest;
 
+import com.example.apitest.exception.EthereumIdNotGeneratedException;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +14,7 @@ public interface ApiEvent {
     Class DATA = DataEvent.class;
     Class SUCCESS = SuccessEvent.class;
 
-    Disposable on(Class event, Consumer<? extends Event> next);
+    Disposable on(Class event, Consumer<? extends Event> next) throws EthereumIdNotGeneratedException;
 
     void onReceive(Event event);
 }
