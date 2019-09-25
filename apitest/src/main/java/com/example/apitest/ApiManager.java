@@ -4,16 +4,17 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 
-public class ApiManager implements ApiEvent{
+public class ApiManager implements ApiEvent {
 
     private static ApiManager apiManager;
     private PublishSubject<Event> subjects;
-    private ApiManager(){
+
+    private ApiManager() {
         subjects = PublishSubject.create();
     }
 
-    public static ApiManager on(){
-        if(apiManager == null){
+    public static ApiManager on() {
+        if (apiManager == null) {
             apiManager = new ApiManager();
         }
         return apiManager;
@@ -27,6 +28,13 @@ public class ApiManager implements ApiEvent{
 
     @Override
     public void onReceive(Event event) {
-        subjects.onNext(event);
+        new Thread(() -> subjects.onNext(event)).start();
+
+    }
+
+    public void sendData(int data) {
+        DataEvent event = new DataEvent();
+        event.value = data;
+        onReceive(event);
     }
 }
